@@ -14,13 +14,38 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
  
   function welcome(agent) {
-    agent.add(`Welcome to my agent!`);
+    agent.add(`Greetings! What mentor are you looking for?`);
   }
  
   function fallback(agent) {
     agent.add(`I didn't understand`);
     agent.add(`I'm sorry, can you try again?`);
-}
+  }
+
+  function mentorSearch(agent) {
+    agent.add(`This is their contact: mentor.contact . Would you like to call her?`);
+  }
+
+  function transferCall(agent) {
+    agent.add(`Transfering you now!`);
+  }
+
+  function goodbye(agent) {
+    agent.add(`Cheers, see you!`);
+  }
+
+ // function yourFunctionHandler(agent) {
+ //    agent.add(`This message is from Dialogflow's Cloud Functions for Firebase editor!`);
+ //    agent.add(new Card({
+ //        title: `Mentor name`,
+ //        imageUrl: 'https://www.insidehighered.com/sites/default/server_files/media/mentoring%20bulletin%20board.jpg',
+ //        text: `Twitter💁`,
+ //        buttonText: 'This is a button',
+ //        buttonUrl: 'https://assistant.google.com/'
+ //      })
+ //    agent.setContext({ name: 'weather', lifespan: 2, parameters: { city: 'Rome' }});
+ //    );
+
 
   // // Uncomment and edit to make your own intent handler
   // // uncomment `intentMap.set('your intent name here', yourFunctionHandler);`
@@ -37,7 +62,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   //   );
   //   agent.add(new Suggestion(`Quick Reply`));
   //   agent.add(new Suggestion(`Suggestion`));
-  //   agent.setContext({ name: 'weather', lifespan: 2, parameters: { city: 'Rome' }});
+  //   
   // }
 
   // // Uncomment and edit to make your own Google Assistant intent handler
@@ -53,20 +78,21 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
 
   // Run the proper function handler based on the matched Dialogflow intent name
 
-  function checkSentiment {
-    if (sentimentAnalysisResult.queryTextSentiment.score < 0) {
-      // Call existing function ('Transfer', Transfer Call Escalation to Human);
+  function checkSentiment(agent) {
+    console.log(agent.sentimentAnalysisResult.queryTextSentiment.score);
+    if (agent.sentimentAnalysisResult.queryTextSentiment.score < 0) {
+      transferCall();
     }
-    alternativeQueryResults.map(item => {
-  const score = item.sentimentAnalysisResult.queryTextSentiment.score;
-  return score == 0 ? 'neutral' : score > 0 ? 'positive' : 'negative';
-});
+  //   alternativeQueryResults.map(item => {
+  // const score = item.sentimentAnalysisResult.queryTextSentiment.score;
+  // return score == 0 ? 'neutral' : score > 0 ? 'positive' : 'negative';
+  };
 
-  }
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
-  // intentMap.set('your intent name here', yourFunctionHandler);
-  // intentMap.set('your intent name here', googleAssistantHandler);
+  intentMap.set('Mentor Search', mentorSearch);
+  intentMap.set('Transfer Call Escalation to Human', transferCall);
+  intentMap.set('Goodbye', goodbye);
   agent.handleRequest(intentMap);
 });

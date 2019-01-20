@@ -17,11 +17,11 @@ NodeJs demo for presentation on the 28/01/2019 for [GDG Cloud London](https://ww
 3. Name for your agent, i.e. mentor-search-game
 4. Select Create.
 5. Go to the settings ⚙ > Export and Import tab > Restore from zip.
-Upload the MentorSearchDemo.zip file located in this repo.
-6. Download/clone this repo.
+Upload the `mentor-search-demo.zip` file located in this repo.
+6. git clone `https://github.com/amdcaruso/dialogflow-women-in-tech-demo.git`
 7. [Download and install Node.js](https://nodejs.org/)
 8. [Install Firebase](https://developers.google.com/actions/dialogflow/deploy-fulfillment)
-9. Within the repo directory, $ npm install to install all of the project's dependencies. 
+9. Within the repo directory, `$npm install` to install all of the project's dependencies. 
 
 ## Technology Stack
 1. NodeJs
@@ -36,3 +36,7 @@ The list used in this project was imported from [Lady Leet's #Fempire](https://g
 ## Demo
 
 The demo can be found [here](https://bot.dialogflow.com/0320156d-2248-470b-a834-6f6919137f8c)
+
+## To be improved
+
+- [ ] Add the Firebase search by region or name

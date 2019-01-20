@@ -7,11 +7,11 @@ const { WebhookClient } = require('dialogflow-fulfillment');
 const { Card, Suggestion } = require('dialogflow-fulfillment');
 
 // Firebase real time database info
-// var admin = require(`firebase-admin`);
-// admin.initializeApp({
-//   databaseURL: ``
-// });
-// var db = admin.database();
+var admin = require(`firebase-admin`);
+admin.initializeApp({
+  databaseURL: `https://mentor-search-demo.firebaseio.com/`
+});
+var db = admin.database();
 
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 
@@ -26,11 +26,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   function fallback(agent) {
     agent.add(`I didn't understand`);
     agent.add(`I'm sorry, can you try again?`);
-  }
-
-  // Add Firebase call here
-  function mentorSearch(agent) {
-    agent.add(`This is their contact: mentor.contact. Would you like to call her?`);
   }
 
   function transferCall(agent) {

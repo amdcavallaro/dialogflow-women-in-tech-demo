@@ -40,41 +40,26 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   if (request.body.queryResult.sentimentAnalysisResult.queryTextSentiment.score < 0) {
     console.log(request.body.queryResult.sentimentAnalysisResult.queryTextSentiment.score);
     let callEvent = agent.setFollowupEvent('telephone-event');
-  } else {
-    console.log(request.body.queryResult.sentimentAnalysisResult.queryTextSentiment.score);
   }
 
   // Fetching information from firebase real time database
-  // function searchName(agent) {
-  //   var results = db.ref("myDatabase");
-  //   results
-  //     .orderByChild("Name")
-  //     .startAt(agent.parameters.person_name)
-  //     .endAt(`${agent.parameters.person_name}~`)
-  //     .on("value", function(snapshot) {
-  //       snapshot.forEach(function(data) {
-  //         console.log(`The mentor's e-mail is ${data.val().Email}`);
-  //         agent.add(`The mentor's e-mail is ${data.val().Email}`);
-  //       });
-  //     });
-  // }
-
-  // function searchSkill(agent) {
-  //   var scoresRef = db.ref("myDatabase");
-  //   scoresRef
-  //     .orderByChild("Skill")
-  //     .equalTo(agent.parameters.person_skill)
-  //     .on("value", function(snapshot) {
-  //       snapshot.forEach(function(data) {
-  //         agent.add(
-  //           "The mentor is an expert at " +
-  //             data.val().Skill +
-  //             " is " +
-  //             data.val().Name
-  //         );
-  //       });
-  //     });
-  // }
+  function mentorSearch(agent) {
+    const name = agent.parameters['given-name'];
+    // const nametwo = request.body.queryResult.parameters['given-name'];
+    agent.add(`Thanks for filling in the information!`);
+    console.log(request.body.queryResult.parameters['given-name']);
+    var results = db.ref("techWomenCollection");
+    results
+      .orderByChild("Name")
+      .startAt(name)
+      .endAt(`${name}~`)
+      .on("value", function (snapshot) {
+        snapshot.forEach(function (data) {
+          console.log("The " + data.val().Name + "'s twitter handle is " + data.val().Twitter);
+          agent.add("The " + data.val().Name + "'s twitter handle is " + data.val().Twitter);
+        });
+      });
+  }
 
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);

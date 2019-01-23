@@ -55,7 +55,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       .endAt(`${name}~`)
       .on("value", function (snapshot) {
         snapshot.forEach(function (data) {
-          agent.add("The " + data.val().Name + "'s twitter handle is " + data.val().Twitter);
+          agent.add("The mentor " + data.val().Name + "'s twitter handle is " + data.val().Twitter);
         });
       });
   }

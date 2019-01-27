@@ -4,7 +4,6 @@
 
 const functions = require('firebase-functions');
 const { WebhookClient } = require('dialogflow-fulfillment');
-const { Card, Suggestion } = require('dialogflow-fulfillment');
 
 // Firebase real time database info
 var admin = require(`firebase-admin`);
@@ -17,36 +16,61 @@ process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
   const agent = new WebhookClient({ request, response });
-  console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
 
   function welcome(agent) {
-    agent.add(`Greetings! What mentor are you looking for?`);
+    // TODO: Add also a text response to be seen in the dialogflow console
+    agent.add(`Webhook: welcome`);
   }
 
   function fallback(agent) {
-    agent.add(`I didn't understand`);
-    agent.add(`I'm sorry, can you try again?`);
+    // transfers the call in case someone says something negative
+    // TODO Probably find a best practice -  not to show the phone number in full here
+    if (request.body.queryResult.sentimentAnalysisResult && request.body.queryResult.sentimentAnalysisResult.queryTextSentiment && request.body.queryResult.sentimentAnalysisResult.queryTextSentiment.score < 0) {
+      console.log(request.body.queryResult.sentimentAnalysisResult.queryTextSentiment.score);
+      response.json({
+        'fulfillmentText': `I am sorry you feel this way`,
+        "fulfillmentMessages": [
+          {
+            "platform": "TELEPHONY",
+            "telephonySynthesizeSpeech": {
+              "text": "I am sorry you feel this way, let me transfer you to a real person!"
+            }
+          },
+          {
+            "platform": "TELEPHONY",
+            "telephonySynthesizeSpeech": {
+              "text": "I am sorry you feel this way, let me transfer you to a real person!"
+            }
+          },
+          {
+            "platform": "TELEPHONY",
+            "telephonyTransferCall": {
+              "phoneNumber": "+12097484428"
+            }
+          },
+        ]
+      });
+    }
+    else {
+      agent.add(`Webhook: fallback`);
+    }
   }
 
   function transferCall(agent) {
-    agent.add(`Transfering you now!`);
+    // TODO: Add also a text response to be seen in the dialogflow console
+    agent.add(`Webhook: Transfer`);
   }
 
   function goodbye(agent) {
-    agent.add(`Cheers, see you!`);
-  }
-
-  // transfers the call in case someone says something negative
-  if (request.body.queryResult.sentimentAnalysisResult.queryTextSentiment.score < 0) {
-    console.log(request.body.queryResult.sentimentAnalysisResult.queryTextSentiment.score);
-    let callEvent = agent.setFollowupEvent('telephone-event');
+    // TODO: Add also a text response to be seen in the dialogflow console
+    agent.add(`Webhook: bye`);
   }
 
   // Fetching information from firebase real time database
+  // Error: Sometimes it fetches the mentor, sometimes it doesn't
+  // TODO Adapt code to use firestore instead..
   function mentorSearch(agent) {
     const name = agent.parameters['given-name'];
-    // const nametwo = request.body.queryResult.parameters['given-name'];
-    agent.add(`Thanks for filling in the information!`);
     console.log(request.body.queryResult.parameters['given-name']);
     var results = db.ref("techWomenCollection");
     results
@@ -58,6 +82,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
           agent.add("The mentor " + data.val().Name + "'s twitter handle is " + data.val().Twitter);
         });
       });
+    // TODO: Add also a text response to be seen in the dialogflow console
+    agent.add(`Thanks for filling in the information!`);
   }
 
   let intentMap = new Map();

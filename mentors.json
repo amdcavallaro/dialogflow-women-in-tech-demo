@@ -1,5 +1,5 @@
 {
-   "techWomenCollection": [
+   "mentors": [
       {
          "Name": "Seetha Annamraju",
          "Type": "Speakers",
@@ -1769,50 +1769,42 @@
          "Twitter": "@web_goddess"
       },
       {
-         "Name": "Tanya Butenko",
-         "Type": "Organizers",
-         "Region": "Australia",
-         "Topics": null,
-         "Location": "Sydney, Australia",
-         "Twitter": "@ButenkoMe"
-      },
-      {
          "Name": "Rachel Ober",
          "Type": "Mentors",
          "Region": "United States",
-         "Topics": null,
-         "Location": "New York NY",
+         "Topics": "Public Speaking",
+         "Location": "New York",
          "Twitter": "@rachelober"
       },
       {
          "Name": "Sean Larkin",
          "Type": "Mentors",
          "Region": "United States",
-         "Topics": null,
-         "Location": "Seattle, WA, USA",
+         "Topics": "Front end developement",
+         "Location": "Seattle",
          "Twitter": "@TheLarkInn"
       },
       {
          "Name": "Anagha Todalbagi",
          "Type": "Mentors",
          "Region": "United States",
-         "Topics": null,
-         "Location": "San Francisco, CA, USA",
+         "Topics": "Go",
+         "Location": "San Francisco",
          "Twitter": "@AnaghaTodalbagi"
       },
       {
          "Name": "Ann Marie Fred",
          "Type": "Mentors",
          "Region": "United States",
-         "Topics": null,
-         "Location": "St. Louis, MO, USA (relocating from Reasearch Triangle Park, NC, USA)",
+         "Topics": "DevOps",
+         "Location": "St. Louis",
          "Twitter": "@DukeAMO"
       },
       {
          "Name": " Manjula Dune",
          "Type": "Mentors",
          "Region": "India",
-         "Topics": null,
+         "Topics": "Front End development",
          "Location": "Mumbai, India",
          "Twitter": "@manjula_dube"
       },
@@ -1828,15 +1820,15 @@
          "Name": "Nenne 'Adora' Nwodo",
          "Type": "Mentors",
          "Region": "Nigeria",
-         "Topics": null,
-         "Location": "Lagos, Nigeria",
+         "Topics": "Web development",
+         "Location": "Lagos",
          "Twitter": "@theadoranwodo"
       },
       {
          "Name": "Emem Brownson",
          "Type": "Mentors",
          "Region": "Nigeria",
-         "Topics": null,
+         "Topics": "Android",
          "Location": "Uyo, Nigeria",
          "Twitter": "@brownjee001"
       },
@@ -1844,7 +1836,7 @@
          "Name": "Oana Galbenu",
          "Type": "Mentors",
          "Region": "Europe",
-         "Topics": null,
+         "Topics": "HTML",
          "Location": "Bucharest, Romania, other Romanian cities, or any location via Skype (or other media)",
          "Twitter": "@oanaalex"
       },
@@ -1852,7 +1844,7 @@
          "Name": "Madlaina Kalunder",
          "Type": "Mentors",
          "Region": "Europe",
-         "Topics": null,
+         "Topics": "public speaking",
          "Location": "Zurich, Switzerland, the Netherlands, any location",
          "Twitter": "@anialdam"
       },
@@ -1860,7 +1852,7 @@
          "Name": "Martin Splitt",
          "Type": "Mentors",
          "Region": "Europe",
-         "Topics": null,
+         "Topics": "Web Development",
          "Location": null,
          "Twitter": "@g33konaut"
       },
@@ -1868,7 +1860,7 @@
          "Name": "Ania Kapuscinska",
          "Type": "Mentors",
          "Region": "Europe",
-         "Topics": null,
+         "Topics": "Python",
          "Location": "London, UK (remote contact also ok)",
          "Twitter": "@lambdanis"
       },
@@ -1876,7 +1868,7 @@
          "Name": "Japan",
          "Type": "Mentors",
          "Region": "Asia",
-         "Topics": null,
+         "Topics": "Ruby on Rails",
          "Location": "Tokyo, Japan",
          "Twitter": "@tuttiq"
       },
@@ -1884,7 +1876,7 @@
          "Name": "Pavithra Kodmad",
          "Type": "Mentors",
          "Region": "Australia",
-         "Topics": null,
+         "Topics": "Front End development",
          "Location": "Sydney, Australia",
          "Twitter": "@pkodmad"
       },
@@ -1892,7 +1884,7 @@
          "Name": "Daisy Smith",
          "Type": "Mentors",
          "Region": "Australia",
-         "Topics": null,
+         "Topics": "Front End development",
          "Location": "Sydney, Australia",
          "Twitter": "@daisysmells"
       },
@@ -1900,7 +1892,7 @@
          "Name": "Tanya Butenko",
          "Type": "Mentors",
          "Region": "Australia",
-         "Topics": null,
+         "Topics": "full stack development",
          "Location": "Sydney, Australia",
          "Twitter": "@ButenkoMe"
       }

@@ -4,22 +4,34 @@
 
 const functions = require('firebase-functions');
 const { WebhookClient } = require('dialogflow-fulfillment');
-
-// Firebase real time database info
-var admin = require(`firebase-admin`);
-admin.initializeApp({
-  databaseURL: `https://mentor-search-demo.firebaseio.com/`
-});
-var db = admin.database();
-
+const admin = require('firebase-admin');
+admin.initializeApp(functions.config().firebase);
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
+
+const db = admin.firestore();
+const collectionRef = db.collection('mentors');
 
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
   const agent = new WebhookClient({ request, response });
 
   function welcome(agent) {
-    // TODO: Add also a text response to be seen in the dialogflow console
-    agent.add(`Webhook: welcome`);
+    response.json({
+      "fulfillmentMessages": [
+        {
+          "text": {
+            "text": [
+              "Greetings! What mentor are you looking for? You can search by name, city or topic."
+            ]
+          }
+        },
+        {
+          "platform": "TELEPHONY",
+          "telephonySynthesizeSpeech": {
+            "text": "Greetings! What mentor are you looking for? You can search by name, city or topic."
+          }
+        }
+      ]
+    });
   }
 
   function fallback(agent) {
@@ -28,8 +40,14 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     if (request.body.queryResult.sentimentAnalysisResult && request.body.queryResult.sentimentAnalysisResult.queryTextSentiment && request.body.queryResult.sentimentAnalysisResult.queryTextSentiment.score < 0) {
       console.log(request.body.queryResult.sentimentAnalysisResult.queryTextSentiment.score);
       response.json({
-        'fulfillmentText': `I am sorry you feel this way`,
         "fulfillmentMessages": [
+          {
+            "text": {
+              "text": [
+                "I am sorry you feel this way, let me transfer you to a real person!"
+              ]
+            }
+          },
           {
             "platform": "TELEPHONY",
             "telephonySynthesizeSpeech": {
@@ -46,38 +64,91 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       });
     }
     else {
-      agent.add(`Webhook: fallback`);
+      response.json({
+        "fulfillmentMessages": [
+          {
+            "text": {
+              "text": [
+                "I'm sorry I didn't catch that, would you prefer to be transferred to the main line?"
+              ]
+            }
+          },
+          {
+            "platform": "TELEPHONY",
+            "telephonySynthesizeSpeech": {
+              "text": "I'm sorry I didn't catch that, would you prefer to be transferred to the main line?"
+            }
+          }
+        ]
+      });
     }
   }
 
   function transferCall(agent) {
-    // TODO: Add also a text response to be seen in the dialogflow console
-    agent.add(`Webhook: Transfer`);
+
+    response.json({
+      "fulfillmentMessages": [
+        {
+          "text": {
+            "text": [
+              "Transfering you now."
+            ]
+          }
+        },
+        {
+          "platform": "TELEPHONY",
+          "telephonySynthesizeSpeech": {
+            "text": "Transfering you now"
+          }
+        }
+      ]
+    });
   }
 
   function goodbye(agent) {
-    // TODO: Add also a text response to be seen in the dialogflow console
-    agent.add(`Webhook: bye`);
+    response.json({
+      "fulfillmentText": "Cheers, good bye!",
+      "fulfillmentMessages": [
+        {
+          "text": {
+            "text": [
+              "Cheers, good bye!"
+            ]
+          }
+        },
+        {
+          "platform": "TELEPHONY",
+          "telephonySynthesizeSpeech": {
+            "text": "Cheers, good bye"
+          }
+        }
+      ]
+    });
   }
 
   // Fetching information from firebase real time database
-  // Error: Sometimes it fetches the mentor, sometimes it doesn't
-  // TODO Adapt code to use firestore instead..
+  // Improve this search method completely
   function mentorSearch(agent) {
     const name = agent.parameters['given-name'];
-    console.log(request.body.queryResult.parameters['given-name']);
-    var results = db.ref("techWomenCollection");
-    results
-      .orderByChild("Name")
-      .startAt(name)
-      .endAt(`${name}~`)
-      .on("value", function (snapshot) {
-        snapshot.forEach(function (data) {
-          agent.add("The mentor " + data.val().Name + "'s twitter handle is " + data.val().Twitter);
-        });
+    const city = agent.parameters['geo-city'];
+    const topic = agent.parameters['topic'];
+
+    const term = name.toLowerCase();
+    const termRef = collectionRef.doc(`${term}`);
+
+    if (name == null && topic == null && city == null) {
+      agent.add("I'm sorry, I didn't understand your request. Please specify a name, topic or city.");
+    }
+
+    return termRef.get()
+      .then((snapshot) => {
+        const { Location, Topic } = snapshot.data();
+        agent.add(`Here you go, ${Location}, ${Topic}. ` +
+          `Would you like to talk to a real person?`);
+      }).catch((e) => {
+        console.log('error:', e);
+        agent.add('Sorry, try again and tell me another mentor.');
       });
-    // TODO: Add also a text response to be seen in the dialogflow console
-    agent.add(`Thanks for filling in the information!`);
   }
 
   let intentMap = new Map();

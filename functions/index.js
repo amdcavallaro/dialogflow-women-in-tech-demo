@@ -38,12 +38,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
           },
           {
             "platform": "TELEPHONY",
-            "telephonySynthesizeSpeech": {
-              "text": "I am sorry you feel this way, let me transfer you to a real person!"
-            }
-          },
-          {
-            "platform": "TELEPHONY",
             "telephonyTransferCall": {
               "phoneNumber": "+12097484428"
             }

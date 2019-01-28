@@ -223,7 +223,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                 {
                   "platform": "TELEPHONY",
                   "telephonySynthesizeSpeech": {
-                    "text": `I found 1 mentor: ${mentors[0]}`
+                    "text": `I found 1 mentor: ${mentors[0]}. Would you like the call to be transfered to them?`
                   }
                 }
               ]
@@ -235,14 +235,14 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                 {
                   "text": {
                     "text": [
-                      `I found ${mentors.length + 1} mentors: ${mentors.join()} and ${lastMentor}`
+                      `I found ${mentors.length + 1} mentors: ${mentors.join()} and ${lastMentor}.`
                     ]
                   }
                 },
                 {
                   "platform": "TELEPHONY",
                   "telephonySynthesizeSpeech": {
-                    "text": `I found ${mentors.length + 1} mentors: ${mentors.join()} and ${lastMentor}`
+                    "text": `I found ${mentors.length + 1} mentors: ${mentors.join()} and ${lastMentor}. Would you like the call to be transfered to them?`
                   }
                 }
               ]
